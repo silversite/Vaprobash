@@ -5,3 +5,4 @@ play
 
 # editor backup files
 *~
+.idea/

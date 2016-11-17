@@ -38,7 +38,7 @@ else
         sudo add-apt-repository -y ppa:ondrej/php5
     else
         # Add repo for PHP 5.6
-        sudo add-apt-repository -y ppa:ondrej/php5-5.6
+        sudo add-apt-repository -y ppa:ondrej/php
     fi
 
     sudo apt-key update
