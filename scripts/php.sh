@@ -49,24 +49,24 @@ else
     sudo apt-get install -qq php5.6-cli php5.6-fpm php5.6-mysql php5.6-pgsql php5.6-sqlite php5.6-curl php5.6-gd php5.6-gmp php5.6-mcrypt php5.6-memcached php5.6-imagick php5.6-intl php5.6-xdebug
 
     # Set PHP FPM to listen on TCP instead of Socket
-    sudo sed -i "s/listen =.*/listen = 127.0.0.1:9000/" /etc/php5/fpm/pool.d/www.conf
+    sudo sed -i "s/listen =.*/listen = 127.0.0.1:9000/" /etc/php/5.6/fpm/pool.d/www.conf
 
     # Set PHP FPM allowed clients IP address
-    sudo sed -i "s/;listen.allowed_clients/listen.allowed_clients/" /etc/php5/fpm/pool.d/www.conf
+    sudo sed -i "s/;listen.allowed_clients/listen.allowed_clients/" /etc/php/5.6/fpm/pool.d/www.conf
 
     # Set run-as user for PHP5-FPM processes to user/group "vagrant"
     # to avoid permission errors from apps writing to files
-    sudo sed -i "s/user = www-data/user = vagrant/" /etc/php5/fpm/pool.d/www.conf
-    sudo sed -i "s/group = www-data/group = vagrant/" /etc/php5/fpm/pool.d/www.conf
+    sudo sed -i "s/user = www-data/user = vagrant/" /etc/php/5.6/fpm/pool.d/www.conf
+    sudo sed -i "s/group = www-data/group = vagrant/" /etc/php/5.6/fpm/pool.d/www.conf
 
-    sudo sed -i "s/listen\.owner.*/listen.owner = vagrant/" /etc/php5/fpm/pool.d/www.conf
-    sudo sed -i "s/listen\.group.*/listen.group = vagrant/" /etc/php5/fpm/pool.d/www.conf
-    sudo sed -i "s/listen\.mode.*/listen.mode = 0666/" /etc/php5/fpm/pool.d/www.conf
+    sudo sed -i "s/listen\.owner.*/listen.owner = vagrant/" /etc/php/5.6/fpm/pool.d/www.conf
+    sudo sed -i "s/listen\.group.*/listen.group = vagrant/" /etc/php/5.6/fpm/pool.d/www.conf
+    sudo sed -i "s/listen\.mode.*/listen.mode = 0666/" /etc/php/5.6/fpm/pool.d/www.conf
 
 
     # xdebug Config
-    cat > $(find /etc/php5 -name xdebug.ini) << EOF
-zend_extension=$(find /usr/lib/php5 -name xdebug.so)
+    cat > $(find /etc/php/5.6/ -name xdebug.ini) << EOF
+zend_extension=$(find /usr/lib/php/5.6 -name xdebug.so)
 xdebug.remote_enable = 1
 xdebug.remote_connect_back = 1
 xdebug.remote_port = 9000
@@ -81,12 +81,12 @@ xdebug.var_display_max_data = 1024
 EOF
 
     # PHP Error Reporting Config
-    sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php5/fpm/php.ini
-    sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php5/fpm/php.ini
+    sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/5.6/fpm/php.ini
+    sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/5.6/fpm/php.ini
 
     # PHP Date Timezone
-    sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php5/fpm/php.ini
-    sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php5/cli/php.ini
+    sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php/5.6/fpm/php.ini
+    sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php/5.6/cli/php.ini
 
-    sudo service php5-fpm restart
+    sudo service php5.6-fpm restart
 fi

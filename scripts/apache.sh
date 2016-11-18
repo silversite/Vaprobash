@@ -27,14 +27,16 @@ else
     github_url="$4"
 fi
 
+echo "path: {$github_url}"
+
 # Add repo for latest FULL stable Apache
 # (Required to remove conflicts with PHP PPA due to partial Apache upgrade within it)
 sudo add-apt-repository -y ppa:ondrej/apache2
 
-
+ 
 # Update Again
 sudo apt-key update
-sudo apt-get update
+sudo apt-get -qq -y update
 
 # Install Apache
 # -qq implies -y --force-yes
@@ -49,11 +51,12 @@ sudo usermod -a -G www-data vagrant
 # On separate lines since some may cause an error
 # if not installed
 sudo a2dismod mpm_prefork mpm_worker
-sudo a2dismod php5
+#sudo a2dismod php
 sudo a2enmod rewrite actions ssl
-curl --silent -L $github_url/helpers/vhost.sh > vhost
-sudo chmod guo+x vhost
-sudo mv vhost /usr/local/bin
+#$github_url/helpers/vhost.sh /usr vhost
+
+sudo cp /vagrant/helpers/vhost.sh /usr/local/bin/vhost
+sudo chmod guo+x /usr/local/bin/vhost
 
 # Create a virtualhost to start, with SSL certificate
 sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $3

@@ -52,16 +52,16 @@ if [[ ! -z $2 && ! $2 =~ false && $2 =~ ^[0-9]*$ ]]; then
     echo ">>> Setting up Swap ($2 MB)"
 
     # Create the Swap file
-    fallocate -l $2M /swapfile
+    sudo fallocate -l $2M /swapfile
 
     # Set the correct Swap permissions
-    chmod 600 /swapfile
+    sudo chmod 600 /swapfile
 
     # Setup Swap space
-    mkswap /swapfile
+    sudo mkswap /swapfile
 
     # Enable Swap space
-    swapon /swapfile
+    sudo swapon /swapfile
 
     # Make the Swap file permanent
     echo "/swapfile   none    swap    sw    0   0" | tee -a /etc/fstab
