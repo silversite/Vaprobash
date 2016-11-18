@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#$1 - mysql_root_password, $2 = mysql_version, $3 = mysql_enable_remote, $4 = db_name
 echo ">>> Installing MySQL Server $2"
 
 [[ -z "$1" ]] && { echo "!!! MySQL root password not set. Check the Vagrant file."; exit 1; }
@@ -42,9 +43,18 @@ if [ $3 == "true" ]; then
 
     Q1="GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$1' WITH GRANT OPTION;"
     Q2="FLUSH PRIVILEGES;"
-    SQL="${Q1}${Q2}"
+
+    if [$4 != '']; then
+        Q3="CREATE DATABASE $4;"
+    else
+        Q3=''
+    fi
+
+    SQL="${Q1}${Q2}${Q3}"
 
     $MYSQL -uroot -p$1 -e "$SQL"
 
     service mysql restart
 fi
+
+echo ">>> Installing MySQL Server $2 completed"
