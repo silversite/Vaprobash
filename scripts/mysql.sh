@@ -45,7 +45,7 @@ if [ $3 == "true" ]; then
     Q2="FLUSH PRIVILEGES;"
 
     if [$4 != '']; then
-        Q3="CREATE DATABASE $4;"
+        Q3="CREATE DATABASE IF NOT EXISTS $4;"
     else
         Q3=''
     fi
