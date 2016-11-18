@@ -45,7 +45,7 @@ if [ $3 == "true" ]; then
     Q2="FLUSH PRIVILEGES;"
 
     if [$4 != '']; then
-        Q3="CREATE DATABASE IF NOT EXISTS $4;"
+        Q3="CREATE DATABASE IF NOT EXISTS '$4';"
     else
         Q3=''
     fi
@@ -58,3 +58,4 @@ if [ $3 == "true" ]; then
 fi
 
 echo ">>> Installing MySQL Server $2 completed"
+echo $SQL;
