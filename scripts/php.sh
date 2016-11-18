@@ -46,7 +46,7 @@ else
 
     # Install PHP
     # -qq implies -y --force-yes
-    sudo apt-get install -qq php5.6-cli php5.6-fpm php5.6-mysql php5.6-pgsql php5.6-sqlite php5.6-curl php5.6-gd php5.6-gmp php5.6-mcrypt php5.6-memcached php5.6-imagick php5.6-intl php5.6-xdebug
+    sudo apt-get install -qq php5.6-cli php5.6-fpm php5.6-mysql php5.6-pgsql php5.6-sqlite php5.6-curl php5.6-gd php5.6-gmp php5.6-mcrypt php5.6-memcached php5.6-imagick php5.6-intl php5.6-xdebug php5.6-xml
 
     # Set PHP FPM to listen on TCP instead of Socket
     sudo sed -i "s/listen =.*/listen = 127.0.0.1:9000/" /etc/php/5.6/fpm/pool.d/www.conf
