@@ -51,27 +51,30 @@ if [[ ! -z $2 && ! $2 =~ false && $2 =~ ^[0-9]*$ ]]; then
 
     echo ">>> Setting up Swap ($2 MB)"
 
+    # does the swap file already exist?
+    grep -q "swapfile" /etc/fstab
+
     # Create the Swap file
     sudo fallocate -l $2M /swapfile
 
-    # Set the correct Swap permissions
-    sudo chmod 600 /swapfile
-
-    # Setup Swap space
-    sudo mkswap /swapfile
-
-    # Enable Swap space
-    sudo swapon /swapfile
-
-    # Make the Swap file permanent
-    echo "/swapfile   none    swap    sw    0   0" | tee -a /etc/fstab
-
-    # Add some swap settings:
-    # vm.swappiness=10: Means that there wont be a Swap file until memory hits 90% useage
-    # vm.vfs_cache_pressure=50: read http://rudd-o.com/linux-and-free-software/tales-from-responsivenessland-why-linux-feels-slow-and-how-to-fix-that
-    printf "vm.swappiness=10\nvm.vfs_cache_pressure=50" | tee -a /etc/sysctl.conf && sysctl -p
+    # if not then create it
+	if [ $? -ne 0 ]; then
+	  echo 'swapfile not found. Adding swapfile.'
+	  sudo fallocate -l $2M /swapfile
+	  sudo chmod 600 /swapfile
+	  sudo mkswap /swapfile
+	  sudo swapon /swapfile
+	  echo '/swapfile none swap defaults 0 0' >> /etc/fstab
+	else
+	  echo 'swapfile found. No changes made.'
+	fi
 
 fi
+
+# output results to terminal
+df -h
+cat /proc/swaps
+cat /proc/meminfo | grep Swap
 
 # Enable case sensitivity
 shopt -u nocasematch

@@ -14,6 +14,7 @@ github_pat          = ""
 # Server Configuration
 
 hostname        = "example.dev"
+boxname         = "Vaprobash"
 
 # Set a local private network IP address.
 # See http://en.wikipedia.org/wiki/Private_network for explanation
@@ -68,7 +69,7 @@ composer_packages     = [        # List any global Composer packages that you wa
 # Default web server document root
 # Symfony's public directory is assumed "web"
 # Laravel's public directory is assumed "public"
-public_folder         = "/vagrant/example.dev/web"
+public_folder         = "/vagrant/{$hostname}"
 
 laravel_root_folder   = "/vagrant/laravel" # Where to install Laravel. Will `composer install` if a composer.json file exists
 laravel_version       = "latest-stable" # If you need a specific version of Laravel, set it here
@@ -93,9 +94,9 @@ elasticsearch_version = "2.3.1" # 5.0.0-alpha1, 2.3.1, 2.2.2, 2.1.2, 1.7.5
 Vagrant.configure("2") do |config|
 
   # Set server to Ubuntu 14.04
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "bento/ubuntu-16.04"
 
-  config.vm.define "Vaprobash" do |vapro|
+  config.vm.define boxname do |vapro|
   end
 
   if Vagrant.has_plugin?("vagrant-hostmanager")
@@ -112,7 +113,7 @@ Vagrant.configure("2") do |config|
 
   #update /etc/hosts
   if Vagrant.has_plugin?("vagrant-hostsupdater")
-    config.hostsupdater.aliases = ["www.#{$hostname}"]
+    config.hostsupdater.aliases = ["www.#{hostname}"]
   end
   
   # Create a static IP
@@ -224,7 +225,7 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Provision Apache Base
-  config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
+  # config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
 
   # Provision Nginx Base
   # config.vm.provision "shell", path: "#{github_url}/scripts/nginx.sh", args: [server_ip, public_folder, hostname, github_url]
@@ -235,7 +236,7 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Provision MySQL
-  config.vm.provision "shell", path: "#{github_url}/scripts/mysql.sh", args: [mysql_root_password, mysql_version, mysql_enable_remote]
+  # config.vm.provision "shell", path: "#{github_url}/scripts/mysql.sh", args: [mysql_root_password, mysql_version, mysql_enable_remote, db_name]
 
   # Provision PostgreSQL
   # config.vm.provision "shell", path: "#{github_url}/scripts/pgsql.sh", args: pgsql_root_password
