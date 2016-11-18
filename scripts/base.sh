@@ -48,7 +48,7 @@ sudo openssl x509 -req -days 365 -in "$SSL_DIR/xip.io.csr" -signkey "$SSL_DIR/xi
 shopt -s nocasematch
 
 if [[ ! -z $2 && ! $2 =~ false && $2 =~ ^[0-9]*$ ]]; then
-
+    #https://gist.github.com/shovon/9dd8d2d1a556b8bf9c82
     echo ">>> Setting up Swap ($2 MB)"
 
     # does the swap file already exist?
