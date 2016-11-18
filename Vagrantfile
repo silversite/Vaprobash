@@ -6,8 +6,6 @@ github_username = "silversite"
 github_repo     = "Vaprobash"
 github_branch   = "dev"
 github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
-#github_url = "."
-#https://raw.githubusercontent.com/silversite/Vaprobash/dev/scripts/apache.sh
 
 # Because this:https://developer.github.com/changes/2014-12-08-removing-authorizations-token/
 # https://github.com/settings/tokens
@@ -105,12 +103,17 @@ Vagrant.configure("2") do |config|
     config.hostmanager.ignore_private_ip = false
     config.hostmanager.include_offline = false
   end
-
+  
   # Create a hostname, don't forget to put it to the `hosts` file
   # This will point to the server's default virtual host
   # TO DO: Make this work with virtualhost along-side xip.io URL
   config.vm.hostname = hostname
 
+  #update /etc/hosts
+  if Vagrant.has_plugin?("vagrant-hostsupdater")
+    config.hostsupdater.aliases = ["www.#{$hostname}"]
+  end
+  
   # Create a static IP
   if Vagrant.has_plugin?("vagrant-auto_network")
     config.vm.network :private_network, :ip => "0.0.0.0", :auto_network => true
