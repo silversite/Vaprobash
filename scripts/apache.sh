@@ -53,10 +53,11 @@ sudo usermod -a -G www-data vagrant
 sudo a2dismod mpm_prefork mpm_worker
 #sudo a2dismod php
 sudo a2enmod rewrite actions ssl
-#$github_url/helpers/vhost.sh /usr vhost
 
-sudo cp /vagrant/helpers/vhost.sh /usr/local/bin/vhost
-sudo chmod guo+x /usr/local/bin/vhost
+#add helper for apache vhost creator
+curl --silent -L $github_url/helpers/vhost.sh > vhost
+sudo chmod guo+x vhost
+sudo mv vhost /usr/local/bin
 
 # Create a virtualhost to start, with SSL certificate
 sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $3

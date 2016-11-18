@@ -4,9 +4,11 @@
 # Config Github Settings
 github_username = "silversite"
 github_repo     = "Vaprobash"
-github_branch   = "1.4.2"
-#github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
-github_url = "."
+github_branch   = "dev"
+github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
+#github_url = "."
+#https://raw.githubusercontent.com/silversite/Vaprobash/dev/scripts/apache.sh
+
 # Because this:https://developer.github.com/changes/2014-12-08-removing-authorizations-token/
 # https://github.com/settings/tokens
 github_pat          = ""
