@@ -41,16 +41,19 @@ if [ $3 == "true" ]; then
     # thx to http://stackoverflow.com/questions/7528967/how-to-grant-mysql-privileges-in-a-bash-script for this
     MYSQL=`which mysql`
 
-    Q1="GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$1' WITH GRANT OPTION;"
+    Q1="GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '${1}' WITH GRANT OPTION;"
     Q2="FLUSH PRIVILEGES;"
 
-    if [$4 != '']; then
-        Q3="CREATE DATABASE IF NOT EXISTS '$4';"
+    if [[ -z "$4" ]]; then
+        Q3=";"
     else
-        Q3=''
+        Q3="CREATE DATABASE IF NOT EXISTS ${4};"
     fi
 
     SQL="${Q1}${Q2}${Q3}"
+
+    echo "Execute script:"
+    echo "${SQL}"
 
     $MYSQL -uroot -p$1 -e "$SQL"
 
@@ -58,4 +61,3 @@ if [ $3 == "true" ]; then
 fi
 
 echo ">>> Installing MySQL Server $2 completed"
-echo $SQL;
