@@ -67,8 +67,11 @@ if [[ ! -z $2 && ! $2 =~ false && $2 =~ ^[0-9]*$ ]]; then
 	  echo '/swapfile none swap defaults 0 0' >> /etc/fstab
 	else
 	  echo 'swapfile found. No changes made.'
-	fi
-
+     fi
+    #https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors
+    sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+    sudo /sbin/mkswap /var/swap.1
+    sudo /sbin/swapon /var/swap.1	
 fi
 
 # output results to terminal
