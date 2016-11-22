@@ -68,11 +68,12 @@ if [[ ! -z $2 && ! $2 =~ false && $2 =~ ^[0-9]*$ ]]; then
 	else
 	  echo 'swapfile found. No changes made.'
      fi
-    #https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors
-    sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
-    sudo /sbin/mkswap /var/swap.1
-    sudo /sbin/swapon /var/swap.1	
 fi
+
+#https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors
+sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+sudo /sbin/mkswap /var/swap.1
+sudo /sbin/swapon /var/swap.1
 
 # output results to terminal
 df -h
