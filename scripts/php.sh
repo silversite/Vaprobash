@@ -31,8 +31,7 @@ if [[ $HHVM == "true" ]]; then
 else
     echo ">>> Installing PHP $PHP_VERSION"
 
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
-
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A
     if [ $PHP_VERSION == "5.5" ]; then
         # Add repo for PHP 5.5
         sudo add-apt-repository -y ppa:ondrej/php5
@@ -46,7 +45,7 @@ else
 
     # Install PHP
     # -qq implies -y --force-yes
-    sudo apt-get install -qq php5.6-cli php5.6-fpm php5.6-mysql php5.6-pgsql php5.6-sqlite php5.6-curl php5.6-gd php5.6-gmp php5.6-mcrypt php5.6-memcached php5.6-imagick php5.6-intl php5.6-xdebug php5.6-xml php5.6-mbstring
+    sudo apt-get install -qq php5.6-cli php5.6-fpm php5.6-mysql php5.6-pgsql php5.6-sqlite php5.6-curl php5.6-gd php5.6-gmp php5.6-mcrypt php5.6-memcached php5.6-imagick php5.6-intl php5.6-xdebug php5.6-xml php5.6-mbstring php5.6-bcmath
 
     # Set PHP FPM to listen on TCP instead of Socket
     sudo sed -i "s/listen =.*/listen = 127.0.0.1:9000/" /etc/php/5.6/fpm/pool.d/www.conf
