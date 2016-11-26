@@ -47,7 +47,11 @@ if [ $3 == "true" ]; then
     if [[ -z "$4" ]]; then
         Q3=";"
     else
-        Q3="CREATE DATABASE IF NOT EXISTS ${4};"
+        Q3="
+        CREATE USER 'sonata'@'%' IDENTIFIED BY 'sonata';
+        GRANT ALL ON *.* TO 'sonata'@'%' IDENTIFIED BY 'sonata' WITH GRANT OPTION;
+        FLUSH PRIVILEGES;
+        CREATE DATABASE IF NOT EXISTS ${4};"
     fi
 
     SQL="${Q1}${Q2}${Q3}"

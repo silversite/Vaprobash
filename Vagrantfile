@@ -13,8 +13,8 @@ github_pat          = ""
 
 # Server Configuration
 
-hostname        = "example.dev"
-boxname         = "Vaprobash"
+hostname        = "sonata.demo.dev"
+boxname         = "SonataDemo"
 
 # Set a local private network IP address.
 # See http://en.wikipedia.org/wiki/Private_network for explanation
@@ -22,10 +22,10 @@ boxname         = "Vaprobash"
 #   10.0.0.1    - 10.255.255.254
 #   172.16.0.1  - 172.31.255.254
 #   192.168.0.1 - 192.168.255.254
-server_ip             = "192.168.22.10"
+server_ip             = "192.168.22.11"
 server_cpus           = "2"   # Cores
-server_memory         = "2048" # MB
-server_swap           = "1024" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
+server_memory         = "4096" # MB
+server_swap           = "4096" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
 
 # UTC        for Universal Coordinated Time
 # EST        for Eastern Standard Time
@@ -35,13 +35,13 @@ server_swap           = "1024" # Options: false | int (MB) - Guideline: Between 
 server_timezone  = "UTC"
 
 # Database Configuration
-mysql_root_password   = "root"   # We'll assume user "root"
+mysql_root_password   = "sonata"   # We'll assume user "root"
 mysql_version         = "5.7"    # Options: 5.5 | 5.6 | 5.7
 mysql_enable_remote   = "true"  # remote access enabled when true
-pgsql_root_password   = "root"   # We'll assume user "root"
+pgsql_root_password   = "sonata"   # We'll assume user "root"
 mongo_version         = "2.6"    # Options: 2.6 | 3.0
 mongo_enable_remote   = "false"  # remote access enabled when true
-db_name               = ''       # add database
+db_name               = 'sonata_sandbox'       # add database
 
 # Languages and Packages
 php_timezone          = "UTC"    # http://php.net/manual/en/timezones.php
@@ -69,7 +69,7 @@ composer_packages     = [        # List any global Composer packages that you wa
 # Default web server document root
 # Symfony's public directory is assumed "web"
 # Laravel's public directory is assumed "public"
-public_folder         = "/vagrant/{$hostname}"
+public_folder         = "/vagrant/web"
 
 laravel_root_folder   = "/vagrant/laravel" # Where to install Laravel. Will `composer install` if a composer.json file exists
 laravel_version       = "latest-stable" # If you need a specific version of Laravel, set it here
@@ -94,7 +94,7 @@ elasticsearch_version = "2.3.1" # 5.0.0-alpha1, 2.3.1, 2.2.2, 2.1.2, 1.7.5
 Vagrant.configure("2") do |config|
 
   # Set server to Ubuntu 14.04
-  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.define boxname do |vapro|
   end
@@ -130,10 +130,10 @@ Vagrant.configure("2") do |config|
   # Use NFS for the shared folder
   config.vm.synced_folder ".", "/vagrant",
     id: "core",
-    #:nfs => true,
+    :nfs => true,
     :mount_options => ['nolock,vers=3,udp,noatime,actimeo=2,fsc'],
     type: "rsync",
-    rsync__exclude: [".git/",".vagrant/", ".idea/"]
+    rsync__exclude: [".git/",".vagrant/", ".idea/", "web/bundles/", "app/cache/"]
 
   # Replicate local .gitconfig file if it exists
   if File.file?(File.expand_path("~/.gitconfig"))
@@ -193,7 +193,7 @@ Vagrant.configure("2") do |config|
     override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
 
     provider.token = 'YOUR TOKEN'
-    provider.image = 'ubuntu-14-04-x64'
+    provider.image = 'ubuntu-16-04-x64'
     provider.region = 'nyc2'
     provider.size = '512mb'
   end
@@ -225,7 +225,7 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Provision Apache Base
-  # config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
+   config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
 
   # Provision Nginx Base
   # config.vm.provision "shell", path: "#{github_url}/scripts/nginx.sh", args: [server_ip, public_folder, hostname, github_url]
@@ -236,7 +236,7 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Provision MySQL
-  # config.vm.provision "shell", path: "#{github_url}/scripts/mysql.sh", args: [mysql_root_password, mysql_version, mysql_enable_remote, db_name]
+   config.vm.provision "shell", path: "#{github_url}/scripts/mysql.sh", args: [mysql_root_password, mysql_version, mysql_enable_remote, db_name]
 
   # Provision PostgreSQL
   # config.vm.provision "shell", path: "#{github_url}/scripts/pgsql.sh", args: pgsql_root_password
@@ -366,6 +366,6 @@ Vagrant.configure("2") do |config|
   # Any local scripts you may want to run post-provisioning.
   # Add these to the same directory as the Vagrantfile.
   ##########
-  config.vm.provision "shell", path: "./local-script.sh"
+  config.vm.provision "shell", path: "./local-script.sh", args: [public_folder]
 
 end
